@@ -117,17 +117,16 @@ void displaystudent(student *tete)
     char email[50];
     int id;
     student *L = NULL;
-    if (counter == NULL)
-    {
-        printf("Student not found\n");
-        return;
-    }
+    if (counter == NULL) {
+    printf("Student not found\n");
+    return;
+}
 
-    printf("1-search for student by firstname");
-    printf("2-search for student by id");
-    printf("3-search for student by email");
+    printf("1-search for student by firstname\n");
+    printf("2-search for student by id\n");
+    printf("3-search for student by email\n");
     int c;
-    printf("Enter method of search you want: ");
+    printf("Enter method of search you want: \n");
     scanf("%d", &c);
     switch (c)
     {
@@ -141,9 +140,28 @@ void displaystudent(student *tete)
         counter = searchstudentbyEmail(tete, email);
         break;
     default:
-        printf("Erorr put valid number ");
+        printf("Erorr put valid number \n");
     }
-    float Sum = 0;
+ 
+    if (counter != NULL)
+    {
+        printf("The student named %s  is here \n", firstname);
+        printf("and this are all information about this student:");
+        printf("Id: %d\nFirst name: %s\nLast name: %s\nBirth date: %d\n Address: %s\nMobile: %d\nEmail: %s\nParentcontact: %d\n", counter->id, counter->firstname, counter->lastname, counter->birthdate, counter->address, counter->mobile, counter->email, counter->parentContact);
+        for (int i = 0; i < 2; i++)
+        {
+            printf("%s ,Avg: %.2f ,Coef:%d ,Final: %.2f,Mid: %.2f,Labs: %.2f,Eval: %.2f\n",
+                   counter->modulesname[i], counter->modulesinformation[i][0], counter->modulesinformation[i][1],
+                   counter->modulesinformation[i][2], counter->modulesinformation[i][3],
+                   counter->modulesinformation[i][4], counter->modulesinformation[i][5]);
+            float GeneralAverage;
+        }
+    }
+    else
+    {
+        printf("The student with this %s is not here ", email);
+    }
+       float Sum = 0;
     float SumofCoefficients = 0;
 
     for (int i = 0; i < 1; i++)
@@ -165,140 +183,113 @@ void displaystudent(student *tete)
     char grade[20];
     if (generalAverage >= 18)
     {
-        printf("Excellent");
+        printf("Excellent\n");
     }
     else if (generalAverage >= 15)
     {
-        printf("Very Good");
+        printf("Very Good\n");
     }
     else if (generalAverage >= 12)
     {
-        printf("Good");
+        printf("Good\n");
     }
     else if (generalAverage >= 10)
     {
-        printf("PASS");
+        printf("PASS\n");
     }
     else
     {
-        printf("FAIL");
+        printf("FAIL\n");
     }
     char specialization[50];
     if (generalAverage >= 15)
     {
-        printf("Eligible for Artificial Intelligence");
+        printf("Eligible for Artificial Intelligence\n");
     }
     else if (generalAverage >= 10)
     {
-        printf("Eligible for Network and Security");
+        printf("Eligible for Network and Security\n");
     }
     else
     {
-        printf("Ther no specializatio available");
-    }
-    if (counter != NULL)
-    {
-        printf("The student named %s  is here \n", firstname);
-        printf("and this are all information about this student:");
-        printf("Id: %d\nFirst name: %s\nLast name: %s\nBirth date: %d\n Address: %s\nMobile: %d\nEmail: %s\nParentcontact: %d\n", counter->id, counter->firstname, counter->lastname, counter->birthdate, counter->address, counter->mobile, counter->email, counter->parentContact);
-        for (int i = 0; i < 2; i++)
-        {
-            printf("%s ,Avg: %.2f ,Coef:%d ,Final: %.2f,Mid: %.2f,Labs: %.2f,Eval: %.2f\n",
-                   counter->modulesname[i], counter->modulesinformation[i][0], counter->modulesinformation[i][1],
-                   counter->modulesinformation[i][2], counter->modulesinformation[i][3],
-                   counter->modulesinformation[i][4], counter->modulesinformation[i][5]);
-            float GeneralAverage;
-        }
-    }
-    else
-    {
-        printf("The student with this %s is not here ", email);
+        printf("Ther no specializatio available\n");
     }
 }
-student *deletstudent(student *tete, int id)
-{
-    student *counter = tete;
+student *deletstudent(student * tete,int id){
+    student *counter=tete;
     student *P = NULL;
-    if (tete == NULL)
-    {
+    if(tete==NULL){
         printf("Ther is no student in the list\n");
         return tete;
     }
-    if (tete->id == id)
-    { // if the student in the begin of the list
+     if (tete->id == id) { //if the student in the begin of the list
         student *temp = tete;
         tete = tete->suivant;
         free(temp);
         printf("student deleted");
         return tete;
     }
-    while (counter != NULL && counter->id != id)
-    {
+        while (counter != NULL && counter->id != id) {
         P = counter;
         counter = counter->suivant;
     }
-    if (counter == NULL)
-    {
+        if (counter == NULL) {
         printf("Student not found\n");
         return tete;
     }
-
+ 
     P->suivant = counter->suivant;
     free(counter);
     printf("Student deleted \n");
-    return tete;
+return tete;
 }
-student *modifistudent(student *tete, int id)
-{
+student *modifistudent(student *tete, int id) {
     student *counter = tete;
     printf("Enter the iD of the student: ");
     scanf("%d", &id);
-
-    while (counter != NULL)
-    {
-        if (counter->id == id)
-        {
+    
+    while (counter != NULL) {
+        if (counter->id == id) {
             printf("write new informations\n");
             printf("Enter First Name: ");
             scanf("%s", counter->firstname);
             printf("Enter Last Name: ");
             scanf("%s", counter->lastname);
-
+            
             printf("Enter Birth Date: ");
             scanf("%d", &counter->birthdate);
-
+            
             printf("Enter Address: ");
             scanf(" %[^\n]", counter->address);
-
+            
             printf("Enter Mobile: ");
             scanf("%d", &counter->mobile);
-
+            
             printf("Enter Email: ");
             scanf("%s", counter->email);
-
+            
             printf("Enter Parent Contact: ");
             scanf("%d", &counter->parentContact);
-
-            for (int i = 0; i < 8; i++)
-            {
+            
+            for (int i = 0; i < 8; i++) {
                 printf("Enter module %d name: ", i + 1);
                 scanf(" %[^\n]", counter->modulesname[i]);
-
+                
                 printf("Enter Module Average: ");
                 scanf("%f", &counter->modulesinformation[i][0]);
-
+                
                 printf("Enter Coefficient: ");
                 scanf("%d", &counter->modulesinformation[i][1]);
-
+                
                 printf("Enter Final Exam note: ");
                 scanf("%f", &counter->modulesinformation[i][2]);
-
+                
                 printf("Enter Midterm note: ");
                 scanf("%f", &counter->modulesinformation[i][3]);
-
+                
                 printf("Enter Labs note: ");
                 scanf("%f", &counter->modulesinformation[i][4]);
-
+                
                 printf("Enter Continuous Evaluation note: ");
                 scanf("%f", &counter->modulesinformation[i][5]);
             }
@@ -308,13 +299,12 @@ student *modifistudent(student *tete, int id)
         }
         counter = counter->suivant;
     }
-
+    
     printf("Student not found\n", id);
     return tete;
 }
-void menu()
-{
-    student *L = NULL;
+void menu(){
+     student *L = NULL;
     student *counter = L;
     int o;
     int id;
@@ -337,7 +327,7 @@ void menu()
         scanf("%d", &o);
         switch (o)
         {
-        case 0:
+            case 0:
             printf("Exit");
             return;
         case 1:
@@ -350,18 +340,17 @@ void menu()
         case 3:
             printf("Enter the ID of the student to delete: ");
             scanf("%d", &id);
-            L = deletstudent(L, id);
+                L =deletstudent(L, id);        
             break;
         case 4:
-            L = modifistudent(L, id);
-            break;
+            L=modifistudent(L,id);
+        break;
         default:
             printf("Veuillez choisir une option valide\n");
         }
-    } while (o != 0);
+    } while (o!=0);
 }
-int main()
-{
-    menu();
+int main(){
+   menu();
     return 0;
 }
