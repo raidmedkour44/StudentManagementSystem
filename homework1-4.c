@@ -11,11 +11,11 @@ typedef struct student
     int mobile;
     char email[50];
     int parentContact;
-    char modulesname[1][50];
-    float modulesinformation[1][6];
+    char modulesname[8][50];
+    float modulesinformation[8][6];
     struct student *suivant;
 } student;
-student *addstudent(student *tete, int id, char firstname[], char lastname[], int birthdate, char address[], int mobile, char email[], int parentContact, char modulesname[1][50], float modulesinformation[1][6])
+student *addstudent(student *tete, int id, char firstname[], char lastname[], int birthdate, char address[], int mobile, char email[], int parentContact, char modulesname[8][50], float modulesinformation[8][6])
 {
     student *counter = tete;
     student *nouvs = (student *)malloc(sizeof(student));
@@ -36,7 +36,7 @@ student *addstudent(student *tete, int id, char firstname[], char lastname[], in
     scanf("%s", nouvs->email);
     printf("Enter Parent Contact: ");
     scanf("%d", &nouvs->parentContact);
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 8; i++)
     {
         printf("Enter module %d name: ", i + 1);
         scanf(" %[^\n]", nouvs->modulesname[i]);
@@ -100,6 +100,7 @@ student *searchstudentbyEmail(student *tete, char email[])
     student *counter = tete;
     printf("Enter email of student you want to find: ");
     scanf("%s", email);
+
     while (counter != NULL)
     {
         if (strcmp(counter->email, email) == 0)
@@ -117,16 +118,12 @@ void displaystudent(student *tete)
     char email[50];
     int id;
     student *L = NULL;
-    if (counter == NULL) {
-    printf("Student not found\n");
-    return;
-}
 
     printf("1-search for student by firstname\n");
     printf("2-search for student by id\n");
     printf("3-search for student by email\n");
     int c;
-    printf("Enter method of search you want: \n");
+    printf("Enter method of search you want: ");
     scanf("%d", &c);
     switch (c)
     {
@@ -140,31 +137,29 @@ void displaystudent(student *tete)
         counter = searchstudentbyEmail(tete, email);
         break;
     default:
-        printf("Erorr put valid number \n");
+        printf("Error put valid number \n");
     }
- 
-    if (counter != NULL)
+   if (counter == NULL)
     {
-        printf("The student named %s  is here \n", firstname);
-        printf("and this are all information about this student:");
+        printf("The student is not here\n");
+        return; 
+    }
+        printf("The student is here \n");
+        printf("and this are all information about this student:\n");
         printf("Id: %d\nFirst name: %s\nLast name: %s\nBirth date: %d\n Address: %s\nMobile: %d\nEmail: %s\nParentcontact: %d\n", counter->id, counter->firstname, counter->lastname, counter->birthdate, counter->address, counter->mobile, counter->email, counter->parentContact);
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 8; i++)
         {
-            printf("%s ,Avg: %.2f ,Coef:%d ,Final: %.2f,Mid: %.2f,Labs: %.2f,Eval: %.2f\n",
+            printf("Module name: %s\nAvg: %.2f\nCoef:%0.2f\nFinal: %.2f\nMid: %.2f\nLabs: %.2f\nEval: %.2f\n",
                    counter->modulesname[i], counter->modulesinformation[i][0], counter->modulesinformation[i][1],
                    counter->modulesinformation[i][2], counter->modulesinformation[i][3],
                    counter->modulesinformation[i][4], counter->modulesinformation[i][5]);
             float GeneralAverage;
         }
-    }
-    else
-    {
-        printf("The student with this %s is not here ", email);
-    }
+    
        float Sum = 0;
     float SumofCoefficients = 0;
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 8; i++)
     {
         Sum += counter->modulesinformation[i][0] * counter->modulesinformation[i][1];
         SumofCoefficients += counter->modulesinformation[i][1];
@@ -179,7 +174,7 @@ void displaystudent(student *tete)
     {
         generalAverage = Sum / SumofCoefficients;
     }
-
+    printf("General averege: %0.2f\n", generalAverage);
     char grade[20];
     if (generalAverage >= 18)
     {
@@ -226,7 +221,7 @@ student *deletstudent(student * tete,int id){
         student *temp = tete;
         tete = tete->suivant;
         free(temp);
-        printf("student deleted");
+        printf("student deleted\n");
         return tete;
     }
         while (counter != NULL && counter->id != id) {
@@ -319,6 +314,7 @@ void menu(){
     float modulesinformation[8][6];
     do
     {
+        printf("----------------------------------------\n");
         printf("1-addstudent\n");
         printf("2-displaystudent\n");
         printf("3-deleteStudent\n");
@@ -333,6 +329,7 @@ void menu(){
         case 1:
 
             L = addstudent(L, id, firstname, lastname, birthdate, address, mobile, email, parentContact, modulesname, modulesinformation);
+            printf("Student added\n");
             break;
         case 2:
             displaystudent(L);
